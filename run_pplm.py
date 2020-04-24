@@ -451,7 +451,7 @@ def full_text_generation(
     else:
         raise Exception("Specify either a bag of words or a discriminator")
 
-    unpert_gen_tok_text, _, _ = generate_text_pplm(
+    unpert_gen_tok_text, _, _, _ = generate_text_pplm(
         model=model,
         tokenizer=tokenizer,
         context=context,
@@ -469,7 +469,7 @@ def full_text_generation(
     losses_in_time = []
 
     for i in range(num_samples):
-        pert_gen_tok_text, discrim_loss, loss_in_time = generate_text_pplm(
+        pert_gen_tok_text, discrim_loss, loss_in_time, pert_probs = generate_text_pplm(
             model=model,
             tokenizer=tokenizer,
             context=context,
@@ -502,7 +502,7 @@ def full_text_generation(
     if device == 'cuda':
         torch.cuda.empty_cache()
 
-    return unpert_gen_tok_text, pert_gen_tok_texts, discrim_losses, losses_in_time
+    return unpert_gen_tok_text, pert_gen_tok_texts, discrim_losses, losses_in_time, pert_probs
 
 
 def generate_text_pplm(
@@ -658,7 +658,7 @@ def generate_text_pplm(
         if verbosity_level >= REGULAR:
             print(tokenizer.decode(output_so_far.tolist()[0]))
 
-    return output_so_far, unpert_discrim_loss, loss_in_time
+    return output_so_far, unpert_discrim_loss, loss_in_time, pert_probs
 
 
 def set_generic_model_params(discrim_weights, discrim_meta):
@@ -764,8 +764,8 @@ def run_pplm_example(
     # generate unperturbed and perturbed texts
 
     # full_text_generation returns:
-    # unpert_gen_tok_text, pert_gen_tok_texts, discrim_losses, losses_in_time
-    unpert_gen_tok_text, pert_gen_tok_texts, _, _ = full_text_generation(
+    # unpert_gen_tok_text, pert_gen_tok_texts, discrim_losses, losses_in_time, pert_probs
+    unpert_gen_tok_text, pert_gen_tok_texts, _, _, pert_probs = full_text_generation(
         model=model,
         tokenizer=tokenizer,
         context=tokenized_cond_text,
@@ -842,7 +842,7 @@ def run_pplm_example(
             (tokenized_cond_text, pert_gen_tok_text, unpert_gen_tok_text)
         )
 
-    return
+    return pert_probs
 
 
 if __name__ == '__main__':
