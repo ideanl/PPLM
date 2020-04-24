@@ -632,6 +632,7 @@ def generate_text_pplm(
 
             pert_probs = ((pert_probs ** gm_scale) * (
                     unpert_probs ** (1 - gm_scale)))  # + SMALL_CONST
+            orig_pert_probs = pert_probs
             pert_probs = top_k_filter(pert_probs, k=top_k,
                                       probs=True)  # + SMALL_CONST
 
@@ -658,7 +659,7 @@ def generate_text_pplm(
         if verbosity_level >= REGULAR:
             print(tokenizer.decode(output_so_far.tolist()[0]))
 
-    return output_so_far, unpert_discrim_loss, loss_in_time, pert_probs
+    return output_so_far, unpert_discrim_loss, loss_in_time, orig_pert_probs
 
 
 def set_generic_model_params(discrim_weights, discrim_meta):
