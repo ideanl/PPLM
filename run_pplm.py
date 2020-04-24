@@ -610,6 +610,7 @@ def generate_text_pplm(
         pert_logits, past, pert_all_hidden = model(last, past=pert_past)
         pert_logits = pert_logits[:, -1, :] / temperature  # + SMALL_CONST
         pert_probs = F.softmax(pert_logits, dim=-1)
+        orig_pert_probs = pert_probs
 
         if classifier is not None:
             ce_loss = torch.nn.CrossEntropyLoss()
