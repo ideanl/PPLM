@@ -21,6 +21,12 @@ from torchtext import datasets
 from tqdm import tqdm, trange
 from transformers import BertTokenizer, BertModel
 from transformers import GPT2Tokenizer, GPT2LMHeadModel
+# imports pytorch
+import torch
+
+# imports the torch_xla package
+import torch_xla
+import torch_xla.core.xla_model as xm
 
 from pplm_classification_head import ClassificationHead
 
@@ -326,7 +332,7 @@ def train_discriminator(
         no_cuda=False,
         output_fp='.'
 ):
-    device = "cuda" if torch.cuda.is_available() and not no_cuda else "cpu"
+    device = xm.xla_device()
     add_eos_token = pretrained_model.startswith("gpt2")
 
     if save_model:
