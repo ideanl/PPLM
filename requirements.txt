@@ -1,5 +1,5 @@
 torch
 nltk
 colorama
-transformers
+transformers==2.5.0
 torchtext
