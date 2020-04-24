@@ -29,6 +29,9 @@ from typing import List, Optional, Tuple, Union
 
 import numpy as np
 import torch
+# imports the torch_xla package
+import torch_xla
+import torch_xla.core.xla_model as xm
 import torch.nn.functional as F
 from torch.autograd import Variable
 from tqdm import trange
@@ -88,10 +91,8 @@ DISCRIMINATOR_MODELS_PARAMS = {
 
 
 def to_var(x, requires_grad=False, volatile=False, device='cuda'):
-    if torch.cuda.is_available() and device == 'cuda':
-        x = x.cuda()
-    elif device != 'cuda':
-        x = x.to(device)
+    device = xm.xla_device()
+    x = x.to(device)
     return Variable(x, requires_grad=requires_grad, volatile=volatile)
 
 
@@ -711,7 +712,7 @@ def run_pplm_example(
     verbosity_level = VERBOSITY_LEVELS.get(verbosity.lower(), REGULAR)
 
     # set the device
-    device = "cuda" if torch.cuda.is_available() and not no_cuda else "cpu"
+    device = xm.xla_device()
 
     if discrim == 'generic':
         set_generic_model_params(discrim_weights, discrim_meta)
