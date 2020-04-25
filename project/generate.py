@@ -100,10 +100,11 @@ def main(bow=False, discriminator=False, in_dir='./out', **kwargs):
         if is_last_end:
             context += sentences[-1] + ' '
 
-        print("Result: ", result)
-        print("Sentences: ", sentences)
+        #print("Result: ", result)
+        #print("Sentences: ", sentences)
         print("Story so far: ", context)
         print("\n")
+    return context
 
 
 if __name__ == '__main__':
@@ -163,5 +164,6 @@ if __name__ == '__main__':
         help="Number of iterations"
     )
     args = parser.parse_args()
-    main(**vars(args))
-
+    story = main(**vars(args))
+    print("================")
+    print(story)
