@@ -127,7 +127,7 @@ def main(bow=False, discriminator=False, perplexity=True, **kwargs):
         return
 
     if perplexity:
-        perplexities = perplexity_loop(params, **kwargs)
+        perplexities = perplexity_loop(**kwargs)
         print("Running perplexities with parameters: ", kwargs)
         with open(out_file, 'w') as f:
             json.dump(f, perplexities)
