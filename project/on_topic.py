@@ -5,7 +5,7 @@ import torch
 from transformers import GPT2Model, GPT2Tokenizer
 
 def get_avg_embedding(model, tokenizer, inp):
-    enc = tokenizer.encode(inp, add_special_tokens=True)
+    enc = tokenizer.encode(inp)
     outputs = torch.zeros((1, 1023))
     for i in range(0, len(enc), 1023):
         encoded = torch.tensor(outputs[i:i+1023])[0]
@@ -37,7 +37,7 @@ def main(input_file=None, ref_emb_file=None):
 
     similarities = []
     for gen in gen_passages:
-        gen = get_avg_embedding(gen)
+        gen = get_avg_embedding(model, tokenizer, gen)
         cos = nn.CosineSimilarity(dim=0)
         sim = cos(gen, ref_emb)
         similarities.append(sim)
