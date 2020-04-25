@@ -1,3 +1,5 @@
+import contextlib
+import os
 from run_pplm import run_pplm_example
 import argparse
 import nltk
@@ -41,6 +43,18 @@ def gen_discrim(discrim_dir, text, seed=0, length=20, gm_scale=0.90, kl_scale=0.
         verbosity='quiet'
     )[0]
 
+def gen_processor(gen_fn, in_dir, context, **params):
+    with open(os.devnull, 'w') as devnull:
+        with contextlib.redirect_stdout(devnull):
+            text = tokenizer.decode(enc[:i])
+            result = gen_fn(in_dir, context, **params)
+            
+    for x in dir(run_pplm):
+        if not x.startswith("__"):
+            del x
+
+    return result
+
 def main(bow=False, discriminator=False, in_dir='./out', **kwargs):
     if (bow and discriminator) or (not bow and not discriminator):
         print("Must specify exactly one of BoW or discriminator", file=sys.stderr)
@@ -64,7 +78,7 @@ def main(bow=False, discriminator=False, in_dir='./out', **kwargs):
         encoded = tokenizer.encode(context)
         if len(encoded) > 1024:
             context = tokenizer.decode(encoded[-1024:])
-        result = fn(in_dir, context, **params)
+        result = gen_processor(fn, in_dir, context, **params)
         context = ' '.join(sent_tokenize(result)[:-1])
         print("Story so far: ", context)
         print("\n")
