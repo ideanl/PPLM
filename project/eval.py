@@ -132,7 +132,8 @@ def main(bow=False, discriminator=False, perplexity=True, **kwargs):
         perplexities = perplexity_loop(bow=bow, **kwargs)
         print("Running perplexities with parameters: ", kwargs)
         with open(kwargs.get('out_file', './eval/perplexity.json'), 'w') as f:
-            json.dump(f, perplexities)
+            print(perplexities)
+            json.dump(perplexities, f)
         print(f"Perplexities outputted to {out_file}")
 
 if __name__ == '__main__':
