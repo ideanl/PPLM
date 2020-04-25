@@ -85,6 +85,9 @@ def main(bow=False, discriminator=False, in_dir='./out', **kwargs):
 
         if len(sent_tokenize(sentences[-1] + ' end test')) > 1:
             context += sentences[-1] + ' '
+        elif len(sentences) == 1:
+            # need to gen longer sequences...
+            params['length'] += 10
 
         print("Result: ", result)
         print("Sentences: ", sentences)
