@@ -1,12 +1,13 @@
+import gpt_2_simple as gpt2
 import contextlib
 import os
-import run_pplm
-from run_pplm import run_pplm_example
 import argparse
 import nltk
 nltk.download('punkt')
 from nltk.tokenize import sent_tokenize
 from transformers import GPT2Tokenizer
+import run_pplm
+from run_pplm import run_pplm_example
 
 def gen_bow(bow_dir, text, seed=0, length=20, gm_scale=0.95, kl_scale=0.01, stepsize=0.03, num_iterations=3):
     return run_pplm_example(
@@ -44,6 +45,11 @@ def gen_discrim(discrim_dir, text, seed=0, length=20, gm_scale=0.90, kl_scale=0.
         verbosity='quiet'
     )[0]
 
+def gen_finetuned(_, text, **params):
+    sess = params['sess']
+    model_name = params['model_name']
+    return gpt2.generate(sess, model_name=model_name, prefix=text, truncate="<|endoftext|>", return_as_list=True, length=params.get('length', 20))[0]
+
 def gen_processor(gen_fn, in_dir, context, **params):
     with open(os.devnull, 'w') as devnull:
         with contextlib.redirect_stdout(devnull):
@@ -55,22 +61,27 @@ def gen_processor(gen_fn, in_dir, context, **params):
 
     return result
 
-def main(bow=False, discriminator=False, in_dir='./out', **kwargs):
-    if (bow and discriminator) or (not bow and not discriminator):
+def main(bow=False, discriminator=False, finetuned=False, in_dir='./out', **kwargs):
+    if bow + discriminator + finetuned != 1:
         print("Must specify exactly one of BoW or discriminator", file=sys.stderr)
         return
 
     if bow:
         params = {'gm_scale': 0.95, 'kl_scale': 0.01, 'stepsize': 0.03, 'num_iterations': 3}
         fn = gen_bow
-    else:
+    elif discriminator:
         params = {'gm_scale': 0.90, 'kl_scale': 0.02, 'stepsize': 0.04, 'num_iterations': 20}
         fn = gen_discrim
+    else:
+        sess = gpt2.start_tf_sess()
+        params = {'sess': sess, 'model_name': '774M'}
+        gpt2.load_gpt2(params['sess'])
+        fn = gen_finetuned
 
     params['length'] = 20
     params.update((k, v) for k, v in kwargs.items() if v is not None)
 
-    tokenizer = GPT2Tokenizer.from_pretrained('gpt2-medium')
+    tokenizer = GPT2Tokenizer.from_pretrained('gpt2-large')
 
     context = ""
     for prefix in ["Once upon a time", "Every day", "But, one day", "Because of that", "Until, finally", "And, ever since then"]:
@@ -81,7 +92,8 @@ def main(bow=False, discriminator=False, in_dir='./out', **kwargs):
 
         while True:
             result = gen_processor(fn, in_dir, context, **params)
-            result = tokenizer.decode(tokenizer.encode(result)[1:]) # remove end token at beginning
+            if not finetuned:
+                result = tokenizer.decode(tokenizer.encode(result)[1:]) # remove end token at beginning
             sentences = sent_tokenize(result)
             one_new_sentence = len(sent_tokenize(result[len(context):])) == 1
             is_last_end = len(sent_tokenize(sentences[-1] + ' end test')) > 1
@@ -120,6 +132,12 @@ if __name__ == '__main__':
         type=bool,
         default=False,
         help="Use discriminator model"
+    )
+    parser.add_argument(
+        "--finetuned",
+        type=bool,
+        default=False,
+        help="Use finetuned GPT-2"
     )
     parser.add_argument(
         "--in_dir",
