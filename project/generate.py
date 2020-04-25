@@ -93,7 +93,7 @@ def main(bow=False, discriminator=False, in_dir='./out', **kwargs):
             break
 
         if len(sentences) > 1:
-            context = ' '.join(sentences[:-1]]) + ' '
+            context = ' '.join(sentences[:-1]) + ' '
         else:
             context = ""
 
