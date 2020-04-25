@@ -844,7 +844,7 @@ def run_pplm_example(
             (tokenized_cond_text, pert_gen_tok_text, unpert_gen_tok_text)
         )
 
-    return pert_probs
+    return pert_gen_text, pert_probs
 
 
 if __name__ == '__main__':

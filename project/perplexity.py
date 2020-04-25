@@ -107,7 +107,7 @@ def get_bow_probs(bow_dir, text, gm_scale=0.95, kl_scale=0.01, stepsize=0.03, nu
         gm_scale=gm_scale,
         kl_scale=kl_scale,
         verbosity='quiet'
-    )
+    )[1]
 
 def get_discriminator_probs(discrim_dir, text, gm_scale=0.90, kl_scale=0.02, stepsize=0.04, num_iterations=20):
     return run_pplm_example(
@@ -126,7 +126,7 @@ def get_discriminator_probs(discrim_dir, text, gm_scale=0.90, kl_scale=0.02, ste
         gm_scale=gm_scale,
         kl_scale=kl_scale,
         verbosity='quiet'
-    )
+    )[1]
 
 def main(bow=False, discriminator=False, perplexity=True, **kwargs):
     if (bow and discriminator) or (not bow and not discriminator):
