@@ -11,6 +11,7 @@ from run_pplm_discrim_train import train_discriminator
 from nltk.tokenize import sent_tokenize
 from nltk.tokenize import word_tokenize
 from transformers import GPT2Tokenizer
+from sklearn.feature_extraction.text import CountVectorizer
 nltk.download('punkt')
 
 def _load_split(data_dir, source, split, n=np.inf):
@@ -105,14 +106,10 @@ def train_discrim(out_dir, stories, train_texts):
 This bag of words is formed by using a vectorizer that excludes words with a high document frequency, where most of the documents (by far) are from webtext. The first document is fairy tales from Project Gutenberg. The descriptive words in this document are the target for this Bag of Words list
 """
 def setup_bow(out_dir, stories, train_texts, max_df=0.1, num_words=200):
-    from sklearn.feature_extraction.text import CountVectorizer
-
     counter = CountVectorizer('content', strip_accents='unicode', lowercase=True, max_df=max_df)
     X = counter.fit_transform(['\n'.join(stories)] + train_texts)
 
-    X.shape
-
-    words_freq = [(word, float(X[0, idx])) for idx, word in enumerate(counter.get_feature_names())]
+    words_freq = [(word, float(X[0, idx])) for idx, word in enumerate(tqdm(counter.get_feature_names()))]
     words_freq = sorted(words_freq, key=lambda x: x[1], reverse=True)
 
     words, freqs = zip(*words_freq[0:num_words])
@@ -133,6 +130,10 @@ def main(
     if stories_path is None:
         print("stories_path argument missing")
         return
+
+    if not os.exists(out_dir):
+        os.makedirs(out_dir, parents=True, exist_ok=True)
+
     stories, (train_texts, _) = prepare(stories_path)
     if bow:
         setup_bow(out_dir, stories, train_texts, max_df=max_df, num_words=num_words)
