@@ -58,7 +58,7 @@ def perplexity_loop(bow=False, **kwargs):
 
     sentences = perplexity_setup()
     tokenizer = GPT2Tokenizer.from_pretrained("gpt2-medium")
-    max_num = min(max_num, len(sentences))
+    max_num = min(params['max_num'], len(sentences))
 
     perplexities = []
     for i, sentence in enumerate(sentences[0:max_num]):
@@ -70,7 +70,7 @@ def perplexity_loop(bow=False, **kwargs):
                 with contextlib.redirect_stdout(devnull):
                     text = tokenizer.decode(enc[:i])
                     if bow:
-                        get_bow_probs(in_dir, text, gm_scale=gm_scale, kl_scale=kl_scale, stepsize=stepsize, num_iterations=num_iterations)
+                        get_bow_probs(in_dir, text, gm_scale=params['gm_scale'], kl_scale=params['kl_scale'], stepsize=params['stepsize'], num_iterations=params['num_iterations'])
                     else:
                         get_discriminator_probs(in_dir, text)
             prob_true = (probs[0][enc[i]] / torch.sum(probs)).detach().cpu().numpy()
