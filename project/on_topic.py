@@ -15,8 +15,8 @@ def get_avg_embedding(model, tokenizer, inp):
 def get_ref_embedding(model, tokenizer, emb_file):
     with open('datasets/gpt2_dataset.txt', 'r') as f:
         ref = f.read()
-    ref = get_avg_embedding(tokenizer, ref, ref)
-    torch.save(ref, emb_file)
+    #ref = get_avg_embedding(tokenizer, ref, ref)
+    #torch.save(ref, emb_file)
     return ref
 
 def main(input_file=None, ref_emb_file=None):
