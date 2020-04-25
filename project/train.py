@@ -9,7 +9,7 @@ def main(steps=200):
         print(f"Downloading {model_name} model...")
         gpt2.download_gpt2(model_name=model_name)   # model is saved into current directory under /models/124M/
 
-    file_name = "./datasets/DatasetV3.txt"
+    file_name = "./datasets/gpt2_dataset.txt"
         
     sess = gpt2.start_tf_sess()
     gpt2.finetune(sess,
