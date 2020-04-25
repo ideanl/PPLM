@@ -132,7 +132,7 @@ def main(
         return
 
     if not os.path.exists(out_dir):
-        os.makedirs(out_dir, parents=True, exist_ok=True)
+        os.makedirs(out_dir, exist_ok=True)
 
     stories, (train_texts, _) = prepare(stories_path)
     if bow:
