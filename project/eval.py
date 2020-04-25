@@ -95,7 +95,7 @@ def get_bow_probs(bow_dir, text, gm_scale=0.95, kl_scale=0.01, stepsize=0.03, nu
         length=1,
         stepsize=stepsize,
         sample=True,
-        uncond=(True if i == 0 else False),
+        uncond=(True if text == '' else False),
         num_iterations=num_iterations,
         window_length=5,
         gamma=1.5,
