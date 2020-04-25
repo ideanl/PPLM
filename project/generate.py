@@ -85,12 +85,6 @@ if __name__ == '__main__':
         help="Use discriminator model"
     )
     parser.add_argument(
-        "--out_file",
-        type=str,
-        default="./eval/perplexity.json",
-        help="In directory of necessary model files"
-    )
-    parser.add_argument(
         "--in_dir",
         type=str,
         default="./out",
