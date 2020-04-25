@@ -41,7 +41,7 @@ def gen_discrim(discrim_dir, text, seed=0, length=20, gm_scale=0.90, kl_scale=0.
         verbosity='quiet'
     )[0]
 
-def main(bow=False, discriminator=False, **kwargs):
+def main(bow=False, discriminator=False, in_dir='./out', **kwargs):
     if (bow and discriminator) or (not bow and not discriminator):
         print("Must specify exactly one of BoW or discriminator", file=sys.stderr)
         return
@@ -54,7 +54,6 @@ def main(bow=False, discriminator=False, **kwargs):
         fn = gen_discrim
 
     params['length'] = 20
-    params['in_dir'] = './out'
     params.update((k, v) for k, v in kwargs.items() if v is not None)
 
     tokenizer = GPT2Tokenizer.from_pretrained('gpt2-medium')
@@ -65,7 +64,7 @@ def main(bow=False, discriminator=False, **kwargs):
         encoded = tokenizer.encode(context)
         if len(encoded) > 1024:
             context = tokenizer.decode(encoded[-1024:])
-        result = fn(params['in_dir'], context, **params)
+        result = fn(in_dir, context, **params)
         context += ' '.join(sent_tokenize(result)[:-1])
         print("Story so far: ", context)
         print("\n")
