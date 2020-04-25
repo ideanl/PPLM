@@ -2,6 +2,7 @@ import os
 import math
 import contextlib
 import sys
+import json
 import requests
 import random
 from transformers.modeling_gpt2 import GPT2LMHeadModel
@@ -127,7 +128,10 @@ def main(bow=False, discriminator=False, perplexity=True, **kwargs):
 
     if perplexity:
         perplexities = perplexity_loop(params, **kwargs)
-        print(perplexities)
+        print("Running perplexities with parameters: ", kwargs)
+        with open(out_file, 'w') as f:
+            json.dump(f, perplexities)
+        print(f"Perplexities outputted to {out_file}")
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
@@ -148,6 +152,12 @@ if __name__ == '__main__':
         type=bool,
         default=True,
         help="Use discriminator model"
+    )
+    parser.add_argument(
+        "--out_file",
+        type=str,
+        default="./eval/perplexity.json",
+        help="In directory of necessary model files"
     )
     parser.add_argument(
         "--in_dir",
