@@ -44,7 +44,7 @@ def perplexity_setup():
     
     return sentences
 
-def perpelexity_loop(in_dir='./out', **kwargs):
+def perplexity_loop(in_dir='./out', **kwargs):
     if bow:
         params = {'gm_scale': 0.95, 'kl_scale': 0.01, 'stepsize': 0.03, 'num_iterations': 3}
     else:
