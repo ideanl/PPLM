@@ -79,10 +79,15 @@ def main(bow=False, discriminator=False, in_dir='./out', **kwargs):
         if len(encoded) > 1024:
             context = tokenizer.decode(encoded[-1024:])
         result = gen_processor(fn, in_dir, context, **params)
-        print("Result: ", result)
+        result = tokenizer.decode(tokenizer.encode(result)[1:]) # remove end token at beginning
         sentences = sent_tokenize(result)
-        print("Sentences: ", sentences)
-        context = ' '.join(sent_tokenize(result)[:-1]) + ' '
+        context = ' '.join(sentences[:-1]) + ' '
+
+        if len(sent_tokenize(sentences[-1] + ' end test')) > 1:
+            context += sentences[-1] + ' '
+
+        #print("Result: ", result)
+        #print("Sentences: ", sentences)
         print("Story so far: ", context)
         print("\n")
 
