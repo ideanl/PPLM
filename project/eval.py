@@ -58,7 +58,8 @@ def perplexity_loop(bow=False, **kwargs):
 
     params.update((k, v) for k, v in kwargs.items() if v is not None)
 
-    print("Running perplexities with parameters: ", params)
+    type_m = "Bag of Words" if bow else "Discriminator"
+    print(f"Running perplexities for {type_m} with parameters: ", params)
 
     sentences = perplexity_setup()
     tokenizer = GPT2Tokenizer.from_pretrained("gpt2-medium")
