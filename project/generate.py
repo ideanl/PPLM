@@ -5,9 +5,6 @@ nltk.download('punkt')
 from nltk.tokenize import sent_tokenize
 from transformers import GPT2Tokenizer
 
-run_pplm_example(
-)
-
 def gen_bow(bow_dir, text, seed=0, length=20, gm_scale=0.95, kl_scale=0.01, stepsize=0.03, num_iterations=3):
     return run_pplm_example(
         cond_text=text,
@@ -17,7 +14,6 @@ def gen_bow(bow_dir, text, seed=0, length=20, gm_scale=0.95, kl_scale=0.01, step
         stepsize=stepsize,
         sample=True,
         seed=seed,
-        uncond=(True if text == '' else False),
         num_iterations=num_iterations,
         window_length=5,
         gamma=1.5,
@@ -38,7 +34,6 @@ def gen_discrim(discrim_dir, text, seed=0, length=20, gm_scale=0.90, kl_scale=0.
         length=length,
         stepsize=stepsize,
         sample=True,
-        uncond=(True if i == 0 else False),
         num_iterations=num_iterations,
         gamma=1,
         gm_scale=gm_scale,
