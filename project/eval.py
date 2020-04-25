@@ -44,7 +44,7 @@ def perplexity_setup():
     
     return sentences
 
-def perplexity_loop(in_dir='./out', **kwargs):
+def perplexity_loop(bow=False, **kwargs):
     if bow:
         params = {'gm_scale': 0.95, 'kl_scale': 0.01, 'stepsize': 0.03, 'num_iterations': 3}
     else:
@@ -127,7 +127,7 @@ def main(bow=False, discriminator=False, perplexity=True, **kwargs):
         return
 
     if perplexity:
-        perplexities = perplexity_loop(**kwargs)
+        perplexities = perplexity_loop(bow=bow, **kwargs)
         print("Running perplexities with parameters: ", kwargs)
         with open(out_file, 'w') as f:
             json.dump(f, perplexities)
