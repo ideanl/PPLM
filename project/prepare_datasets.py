@@ -79,6 +79,7 @@ def write_to_discriminator(tokenizer, fp, text, label, cutoff=True, stride=0, ma
 
 
 def setup_discriminator(out_dir, stories, train_texts):
+    tokenizer = GPT2Tokenizer.from_pretrained("gpt2-medium")
     with open(f"{out_dir}/discriminator.txt", 'w') as d:
         pos_lines = 0
         for passage in tqdm(stories):
@@ -87,7 +88,7 @@ def setup_discriminator(out_dir, stories, train_texts):
           for i in range(0, len(sentences), 1):
             if sentences[i] == '.':
               continue
-            pos_lines += write_to_discriminator(d, ' '.join(sentences[i:i+1]), 1)
+            pos_lines += write_to_discriminator(tokenizer, d, ' '.join(sentences[i:i+1]), 1)
 
         neg_lines = 0
         for i, text in enumerate(tqdm(train_texts[0:(2000)])):
@@ -97,11 +98,10 @@ def setup_discriminator(out_dir, stories, train_texts):
           for i in range(0, len(sentences), 1):
             if sentences[i] == '.':
               continue
-            neg_lines += write_to_discriminator(d, ' '.join(sentences[i:i+1]), 0)
+            neg_lines += write_to_discriminator(tokenizer, d, ' '.join(sentences[i:i+1]), 0)
 
 def train_discrim(out_dir, stories, train_texts):
-    tokenizer = GPT2Tokenizer.from_pretrained("gpt2-medium")
-    setup_discriminator(tokenizer, out_dir, stories, train_texts)
+    setup_discriminator(out_dir, stories, train_texts)
     #train_discriminator(dataset='generic', dataset_fp="{out_dir}/discriminator.txt", save_model=True, output_fp=out_dir)
 
 
