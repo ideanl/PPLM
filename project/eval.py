@@ -49,8 +49,8 @@ def perplexity_loop(bow=False, **kwargs):
         params = {'gm_scale': 0.95, 'kl_scale': 0.01, 'stepsize': 0.03, 'num_iterations': 3}
     else:
         params = {'gm_scale': 0.90, 'kl_scale': 0.02, 'stepsize': 0.04, 'num_iterations': 20}
-    params['max_num'] = max_num
-    params['in_dir'] = in_dir
+    params['max_num'] = 20
+    params['in_dir'] = './out'
 
     params.update((k, v) for k, v in kwargs.iteritems() if v is not None)
 
