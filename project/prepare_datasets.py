@@ -131,7 +131,7 @@ def main(
         print("stories_path argument missing")
         return
 
-    if not os.exists(out_dir):
+    if not os.path.exists(out_dir):
         os.makedirs(out_dir, parents=True, exist_ok=True)
 
     stories, (train_texts, _) = prepare(stories_path)
