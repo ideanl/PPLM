@@ -143,43 +143,43 @@ def main(
     if discriminator:
         train_discrim(out_dir, stories, train_texts)
 
-
-parser = argparse.ArgumentParser()
-parser.add_argument(
-    "--stories_path",
-    type=str,
-    default="./datasets/DatasetV3.txt",
-    help="Dataset of stories path"
-)
-parser.add_argument(
-    "--out_dir",
-    type=str,
-    default="./out",
-    help="Output dir of BoW or discriminator saved files"
-)
-parser.add_argument(
-    "--bow",
-    type=bool,
-    default=False,
-    help="Generate BoW wordlist"
-)
-parser.add_argument(
-    "--discriminator",
-    type=bool,
-    default=False,
-    help="Train discriminator"
-)
-parser.add_argument(
-    "--max_df",
-    type=int,
-    default=0.1,
-    help="Max DF for the BoW vectorizer"
-)
-parser.add_argument(
-    "--num_words",
-    type=int,
-    default=200,
-    help="Number of words for the BoW list"
-)
-args = parser.parse_args()
-main(**vars(args))
+if __name__ == '__main__':
+    parser = argparse.ArgumentParser()
+    parser.add_argument(
+        "--stories_path",
+        type=str,
+        default="./datasets/DatasetV3.txt",
+        help="Dataset of stories path"
+    )
+    parser.add_argument(
+        "--out_dir",
+        type=str,
+        default="./out",
+        help="Output dir of BoW or discriminator saved files"
+    )
+    parser.add_argument(
+        "--bow",
+        type=bool,
+        default=False,
+        help="Generate BoW wordlist"
+    )
+    parser.add_argument(
+        "--discriminator",
+        type=bool,
+        default=False,
+        help="Train discriminator"
+    )
+    parser.add_argument(
+        "--max_df",
+        type=int,
+        default=0.1,
+        help="Max DF for the BoW vectorizer"
+    )
+    parser.add_argument(
+        "--num_words",
+        type=int,
+        default=200,
+        help="Number of words for the BoW list"
+    )
+    args = parser.parse_args()
+    main(**vars(args))
