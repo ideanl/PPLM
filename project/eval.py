@@ -21,14 +21,15 @@ def setup_eval_dataset():
     if not os.path.exists('./eval'):
         os.mkdir('eval')
 
-    with open('./eval/fairy_tales.txt', 'wb') as f:
-        file_size = int(r.headers["content-length"])
-        chunk_size = 1000
-        with tqdm(ncols=100, desc="Fetching dval dataset of fairy tales", total=file_size, unit_scale=True) as pbar:
-            # 1k for chunk_size, since Ethernet packet size is around 1500 bytes
-            for chunk in r.iter_content(chunk_size=chunk_size):
-                f.write(chunk)
-                pbar.update(chunk_size)
+    if not os.path.exists('./eval/fairy_tales.txt'):
+        with open('./eval/fairy_tales.txt', 'wb') as f:
+            file_size = int(r.headers["content-length"])
+            chunk_size = 1000
+            with tqdm(ncols=100, desc="Fetching eval dataset of fairy tales", total=file_size, unit_scale=True) as pbar:
+                # 1k for chunk_size, since Ethernet packet size is around 1500 bytes
+                for chunk in r.iter_content(chunk_size=chunk_size):
+                    f.write(chunk)
+                    pbar.update(chunk_size)
 
 def perplexity_setup():
     setup_eval_dataset()
