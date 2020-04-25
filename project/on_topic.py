@@ -57,7 +57,7 @@ if __name__ == '__main__':
     )
     parser.add_argument(
         "--ref_emb_file",
-        required=True
+        required=True,
         help="Reference embedding"
     )
     args = parser.parse_args()
