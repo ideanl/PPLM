@@ -4,3 +4,4 @@ colorama
 transformers
 torchtext
 scikit-learn
+gpt-2-simple
