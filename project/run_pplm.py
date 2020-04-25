@@ -678,7 +678,7 @@ def set_generic_model_params(discrim_weights, discrim_meta):
 
 
 def run_pplm_example(
-        pretrained_model="gpt2-medium",
+        pretrained_model="gpt2-large",
         cond_text="",
         uncond=False,
         num_samples=1,
