@@ -28,7 +28,7 @@ def prepare(stories_path):
       stories = text.split('=========\n')
 
     """### Get general dataset of non-children's stories"""
-    subdir = 'data'
+    subdir = 'webtext_data'
     if not os.path.exists(subdir):
         os.makedirs(subdir)
     subdir = subdir.replace('\\','/') # needed for Windows
