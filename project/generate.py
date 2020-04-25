@@ -78,16 +78,27 @@ def main(bow=False, discriminator=False, in_dir='./out', **kwargs):
         encoded = tokenizer.encode(context)
         if len(encoded) > 1024:
             context = tokenizer.decode(encoded[-1024:])
-        result = gen_processor(fn, in_dir, context, **params)
-        result = tokenizer.decode(tokenizer.encode(result)[1:]) # remove end token at beginning
-        sentences = sent_tokenize(result)
-        context = ' '.join(sentences[:-1]) + ' '
 
-        if len(sent_tokenize(sentences[-1] + ' end test')) > 1:
+        while True:
+            result = gen_processor(fn, in_dir, context, **params)
+            result = tokenizer.decode(tokenizer.encode(result)[1:]) # remove end token at beginning
+            sentences = sent_tokenize(result)
+            one_new_sentence = len(sent_tokenize(result[len(context):])) == 1
+            is_last_end = len(sent_tokenize(sentences[-1] + ' end test')) > 1
+
+            if one_new_sentence and not is_last_end:
+                # incomplete sentence generated, need to gen longer sequences...
+                params['length'] += 10
+                continue
+            break
+
+        if len(sentences) > 1:
+            context = ' '.join(sentences[:-1]]) + ' '
+        else:
+            context = ""
+
+        if is_last_end:
             context += sentences[-1] + ' '
-        elif len(sentences) == 1:
-            # need to gen longer sequences...
-            params['length'] += 10
 
         print("Result: ", result)
         print("Sentences: ", sentences)
