@@ -17,10 +17,11 @@ from nltk.tokenize import sent_tokenize
 
 def setup_eval_dataset():
     r = requests.get('https://www.gutenberg.org/cache/epub/4357/pg4357.txt', stream=True)
+
     if not os.path.exists('./eval'):
         os.mkdir('eval')
 
-    with open('./eval/fairy_tale.txt', 'wb') as f:
+    with open('./eval/fairy_tales.txt', 'wb') as f:
         file_size = int(r.headers["content-length"])
         chunk_size = 1000
         with tqdm(ncols=100, desc="Fetching dval dataset of fairy tales", total=file_size, unit_scale=True) as pbar:
