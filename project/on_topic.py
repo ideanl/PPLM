@@ -4,7 +4,7 @@ import os
 import torch
 from transformers import GPT2Model, GPT2Tokenizer
 
-def get_avg_embedding(inp):
+def get_avg_embedding(tokenizer, inp):
     enc = tokenizer.encode(inp, add_special_tokens=True)
     outputs = torch.zeros((1, 1023))
     for i in range(0, len(enc), 1023):
@@ -12,10 +12,10 @@ def get_avg_embedding(inp):
         outputs += model(encoded) / (len(encoding) / 1023 + 1)
     return outputs
 
-def get_ref_embedding(emb_file):
+def get_ref_embedding(tokenizer, emb_file):
     with open('datasets/gpt2_dataset.txt') as f:
         ref = f.read()
-    ref = get_avg_embedding(ref)
+    ref = get_avg_embedding(tokenizer, ref)
     torch.save(ref, emb_file)
     return ref
 
@@ -24,8 +24,10 @@ def main(input_file=None, ref_emb_file=None):
         print("input_file and ref_emb are required", file=sys.stederr)
         return
 
+    tokenizer = GPT2Tokenizer.from_pretrained('gpt2-large')
+
     if not os.path.exists(ref_emb_file):
-        ref_emb = get_ref_embedding(ref_emb_file)
+        ref_emb = get_ref_embedding(tokenizer, ref_emb_file)
     else:
         ref_emb = torch.load(ref_emb_file)
 
@@ -33,7 +35,6 @@ def main(input_file=None, ref_emb_file=None):
         gen_passages = f.read().split('\n')
 
     model = GPT2Model.from_pretrained('gpt2-large')
-    tokenizer = GPT2Tokenizer.from_pretrained('gpt2-large')
 
     similarities = []
     for gen in gen_passages:
