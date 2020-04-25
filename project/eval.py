@@ -91,7 +91,7 @@ def get_bow_probs(bow_dir, text, gm_scale=0.95, kl_scale=0.01, stepsize=0.03, nu
     return run_pplm_example(
         cond_text=text,
         num_samples=1,
-        bag_of_words=f"{bow_path}/fairy_tale_bow.txt",
+        bag_of_words=f"{bow_dir}/fairy_tale_bow.txt",
         length=1,
         stepsize=stepsize,
         sample=True,
