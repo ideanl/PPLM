@@ -32,19 +32,19 @@ def main(input_file=None, ref_emb_file=None):
     else:
         ref_emb = torch.load(ref_emb_file)
 
-    with open(input_file, 'r') as f:
-        gen_passages = f.read().split('\n')
+    #with open(input_file, 'r') as f:
+    #    gen_passages = f.read().split('\n')
 
-    similarities = []
-    for gen in gen_passages:
-        gen = get_avg_embedding(model, tokenizer, gen)
-        cos = nn.CosineSimilarity(dim=0)
-        sim = cos(gen, ref_emb)
-        similarities.append(sim)
-        print(f"Similarity at {gen}/{gen_passages}: ", sim)
+    #similarities = []
+    #for gen in gen_passages:
+    #    gen = get_avg_embedding(model, tokenizer, gen)
+    #    cos = nn.CosineSimilarity(dim=0)
+    #    sim = cos(gen, ref_emb)
+    #    similarities.append(sim)
+    #    print(f"Similarity at {gen}/{gen_passages}: ", sim)
 
-    print("========")
-    print(similarities)
+    #print("========")
+    #print(similarities)
 
 
 if __name__ == '__main__':
