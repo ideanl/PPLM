@@ -52,7 +52,7 @@ def perplexity_loop(bow=False, **kwargs):
     params['max_num'] = 20
     params['in_dir'] = './out'
 
-    params.update((k, v) for k, v in kwargs.iteritems() if v is not None)
+    params.update((k, v) for k, v in kwargs.items() if v is not None)
 
     sentences = perplexity_setup()
     tokenizer = GPT2Tokenizer.from_pretrained("gpt2-medium")
