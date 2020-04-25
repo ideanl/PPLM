@@ -12,6 +12,7 @@ from run_pplm import run_pplm_example
 import argparse
 from transformers import GPT2Tokenizer
 import nltk
+import torch
 nltk.download('punkt')
 from nltk.tokenize import sent_tokenize
 
