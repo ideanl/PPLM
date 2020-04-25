@@ -86,8 +86,8 @@ def main(bow=False, discriminator=False, in_dir='./out', **kwargs):
         if len(sent_tokenize(sentences[-1] + ' end test')) > 1:
             context += sentences[-1] + ' '
 
-        #print("Result: ", result)
-        #print("Sentences: ", sentences)
+        print("Result: ", result)
+        print("Sentences: ", sentences)
         print("Story so far: ", context)
         print("\n")
 
