@@ -102,7 +102,7 @@ def setup_discriminator(out_dir, stories, train_texts):
 
 def train_discrim(out_dir, stories, train_texts):
     setup_discriminator(out_dir, stories, train_texts)
-    #train_discriminator(dataset='generic', dataset_fp="{out_dir}/discriminator.txt", save_model=True, output_fp=out_dir)
+    train_discriminator(dataset='generic', dataset_fp="{out_dir}/discriminator.txt", save_model=True, output_fp=out_dir)
 
 
 """# PPLM Bag of Words
