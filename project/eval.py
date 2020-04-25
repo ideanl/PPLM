@@ -71,9 +71,9 @@ def perplexity_loop(bow=False, **kwargs):
                 with contextlib.redirect_stdout(devnull):
                     text = tokenizer.decode(enc[:i])
                     if bow:
-                        get_bow_probs(params['in_dir'], text, gm_scale=params['gm_scale'], kl_scale=params['kl_scale'], stepsize=params['stepsize'], num_iterations=params['num_iterations'])
+                        probs = get_bow_probs(params['in_dir'], text, gm_scale=params['gm_scale'], kl_scale=params['kl_scale'], stepsize=params['stepsize'], num_iterations=params['num_iterations'])
                     else:
-                        get_discriminator_probs(params['in_dir'], text)
+                        probs = get_discriminator_probs(params['in_dir'], text)
             prob_true = (probs[0][enc[i]] / torch.sum(probs)).detach().cpu().numpy()
             loss -= math.log(prob_true)
             num_tokens += 1
