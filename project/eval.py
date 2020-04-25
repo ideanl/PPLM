@@ -87,8 +87,8 @@ def perplexity_loop(bow=False, **kwargs):
                 if not x.startswith("__"):
                     del x
         perplexities.append(math.exp(loss / num_tokens))
-        print(f"Perplexity @ sentence {j}/{max_num}: {perplexities[-1]}")
-        print(f"Mean Perplexity @ sentence {j}/{max_num}: {sum(perplexities) / len(perplexities)}")
+        print(f"Perplexity @ sentence {j+1}/{max_num}: {perplexities[-1]}")
+        print(f"Mean Perplexity @ sentence {j+1}/{max_num}: {sum(perplexities) / len(perplexities)}")
 
     return perplexities
 
