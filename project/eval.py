@@ -58,12 +58,14 @@ def perplexity_loop(bow=False, **kwargs):
 
     params.update((k, v) for k, v in kwargs.items() if v is not None)
 
+    print("Running perplexities with parameters: ", params)
+
     sentences = perplexity_setup()
     tokenizer = GPT2Tokenizer.from_pretrained("gpt2-medium")
     max_num = min(params['max_num'], len(sentences))
 
     perplexities = []
-    for i, sentence in enumerate(sentences[0:max_num]):
+    for j, sentence in enumerate(sentences[0:max_num]):
         loss = 0
         num_tokens = 0
         enc = tokenizer.encode(sentence)
@@ -84,8 +86,8 @@ def perplexity_loop(bow=False, **kwargs):
                 if not x.startswith("__"):
                     del x
         perplexities.append(math.exp(loss / num_tokens))
-        print(f"Perplexity @ sentence {i}/{max_num}: {perplexities[-1]}")
-        print(f"Mean Perplexity @ sentence {i}/{max_num}: {sum(perplexities) / len(perplexities)}")
+        print(f"Perplexity @ sentence {j}/{max_num}: {perplexities[-1]}")
+        print(f"Mean Perplexity @ sentence {j}/{max_num}: {sum(perplexities) / len(perplexities)}")
 
     return perplexities
 
@@ -132,7 +134,6 @@ def main(bow=False, discriminator=False, perplexity=True, **kwargs):
 
     if perplexity:
         perplexities = perplexity_loop(bow=bow, **kwargs)
-        print("Running perplexities with parameters: ", kwargs)
         out_file = kwargs.get('out_file', './eval/perplexity.json')
         with open(out_file, 'w') as f:
             print(perplexities)
