@@ -10,11 +10,10 @@ def get_avg_embedding(model, tokenizer, inp):
     for i in range(0, len(enc), 1023):
         encoded = torch.tensor(outputs[i:i+1023])[0]
         outputs += model(encoded) / (len(encoding) / 1023 + 1)
-    print("HEREEEE")
     return outputs
 
 def get_ref_embedding(model, tokenizer, emb_file):
-    with open('datasets/gpt2_dataset.txt') as f:
+    with open('datasets/gpt2_dataset.txt', 'r') as f:
         ref = f.read()
     ref = get_avg_embedding(tokenizer, ref, ref)
     torch.save(ref, emb_file)
