@@ -141,19 +141,19 @@ if __name__ == '__main__':
     )
     parser.add_argument(
         "--gm_scale",
-        type=int,
+        type=float,
         default=None,
         help="GM Scale"
     )
     parser.add_argument(
         "--kl_scale",
-        type=int,
+        type=float,
         default=None,
         help="KL Scale"
     )
     parser.add_argument(
         "--stepsize",
-        type=int,
+        type=float,
         default=None,
         help="Stepsize"
     )

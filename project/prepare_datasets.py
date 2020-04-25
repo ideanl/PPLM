@@ -171,7 +171,7 @@ if __name__ == '__main__':
     )
     parser.add_argument(
         "--max_df",
-        type=int,
+        type=float,
         default=0.1,
         help="Max DF for the BoW vectorizer"
     )
