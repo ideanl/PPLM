@@ -39,6 +39,9 @@ def prepare(stories_path):
     ]:
         for split in ['train', 'valid', 'test']:
             filename = ds + "." + split + '.jsonl'
+            if os.path.exists(os.path.join(subdir, filename)):
+                continue
+
             r = requests.get("https://storage.googleapis.com/gpt-2/output-dataset/v1/" + filename, stream=True)
 
             with open(os.path.join(subdir, filename), 'wb') as f:
@@ -54,10 +57,9 @@ def prepare(stories_path):
 
     return stories, (train_texts, valid_texts)
 
-def write_to_discriminator(fp, text, label, cutoff=True, stride=0, max_length=99):
+def write_to_discriminator(tokenizer, fp, text, label, cutoff=True, stride=0, max_length=99):
     c = 0
 
-    tokenizer = GPT2Tokenizer.from_pretrained("gpt2-medium")
     encoding = tokenizer.encode(tokenizer.decode(tokenizer.encode(text.replace("\"", "").replace('\t', '    '))))
 
     if cutoff:
@@ -98,8 +100,9 @@ def setup_discriminator(out_dir, stories, train_texts):
             neg_lines += write_to_discriminator(d, ' '.join(sentences[i:i+1]), 0)
 
 def train_discrim(out_dir, stories, train_texts):
-    setup_discriminator(out_dir, stories, train_texts)
-    train_discriminator(dataset='generic', dataset_fp="{out_dir}/discriminator.txt", save_model=True, output_fp=out_dir)
+    tokenizer = GPT2Tokenizer.from_pretrained("gpt2-medium")
+    setup_discriminator(tokenizer, out_dir, stories, train_texts)
+    #train_discriminator(dataset='generic', dataset_fp="{out_dir}/discriminator.txt", save_model=True, output_fp=out_dir)
 
 
 """# PPLM Bag of Words
