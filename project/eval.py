@@ -1,6 +1,7 @@
 import os
 import math
 import contextlib
+from tqdm import tqdm
 import sys
 import json
 import requests
