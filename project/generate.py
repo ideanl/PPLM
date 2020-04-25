@@ -1,5 +1,6 @@
 import contextlib
 import os
+import run_pplm
 from run_pplm import run_pplm_example
 import argparse
 import nltk
