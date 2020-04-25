@@ -46,7 +46,6 @@ def gen_discrim(discrim_dir, text, seed=0, length=20, gm_scale=0.90, kl_scale=0.
 def gen_processor(gen_fn, in_dir, context, **params):
     with open(os.devnull, 'w') as devnull:
         with contextlib.redirect_stdout(devnull):
-            text = tokenizer.decode(enc[:i])
             result = gen_fn(in_dir, context, **params)
             
     for x in dir(run_pplm):
