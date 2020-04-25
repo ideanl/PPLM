@@ -4,8 +4,8 @@ import os
 import torch
 from transformers import GPT2Model, GPT2Tokenizer
 
-def get_avg_embedding(in):
-    enc = tokenizer.encode(in, add_special_tokens=True)
+def get_avg_embedding(inp):
+    enc = tokenizer.encode(inp, add_special_tokens=True)
     outputs = torch.zeros((1, 1023)
     for i in range(0, len(enc), 1023):
         encoded = torch.Tensor(outputs[i:i+1023])[0]
