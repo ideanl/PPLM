@@ -65,7 +65,7 @@ def main(bow=False, discriminator=False, in_dir='./out', **kwargs):
         if len(encoded) > 1024:
             context = tokenizer.decode(encoded[-1024:])
         result = fn(in_dir, context, **params)
-        context += ' '.join(sent_tokenize(result)[:-1])
+        context = ' '.join(sent_tokenize(result)[:-1])
         print("Story so far: ", context)
         print("\n")
 
