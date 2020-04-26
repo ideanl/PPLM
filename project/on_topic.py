@@ -10,7 +10,7 @@ def get_avg_embedding(model, tokenizer, inp):
     outputs = torch.zeros((1, 1023)).float().to('cuda')
     for i in tqdm(range(0, len(enc), 100)):
         encoded = torch.tensor(enc[i:i+100]).unsqueeze(0).long().cuda()
-        outputs += torch.mean(model(encoded)[0].squeeze(0), dim=1) / (len(enc) / 100 + 1)
+        outputs += torch.mean(model(encoded)[0].squeeze(0), dim=0) / (len(enc) / 100 + 1)
     return outputs
 
 def get_ref_embedding(model, tokenizer, emb_file):
