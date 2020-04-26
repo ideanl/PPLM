@@ -25,9 +25,9 @@ def main(input_file=None, ref_emb_file=None):
         print("input_file and ref_emb are required", file=sys.stederr)
         return
 
-    model = GPT2Model.from_pretrained('gpt2-large')
+    model = GPT2Model.from_pretrained('gpt2-medium')
     model.to('cuda')
-    tokenizer = GPT2Tokenizer.from_pretrained('gpt2-large')
+    tokenizer = GPT2Tokenizer.from_pretrained('gpt2-medium')
 
     if not os.path.exists(ref_emb_file):
         ref_emb = get_ref_embedding(model, tokenizer, ref_emb_file)
