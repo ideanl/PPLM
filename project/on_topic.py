@@ -6,7 +6,7 @@ from transformers import GPT2Model, GPT2Tokenizer
 
 def get_avg_embedding(model, tokenizer, inp):
     enc = tokenizer.encode(inp)
-    outputs = torch.zeros((1, 1023), dtype=torch.long)
+    outputs = torch.zeros((1, 1023)).long()
     for i in range(0, len(enc), 1023):
         encoded = torch.tensor(outputs[i:i+1023])[0]
         outputs += model(encoded) / (len(encoding) / 1023 + 1)
