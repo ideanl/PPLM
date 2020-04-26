@@ -7,7 +7,7 @@ from transformers import GPT2Model, GPT2Tokenizer
 
 def get_avg_embedding(model, tokenizer, inp):
     enc = tokenizer.encode(inp)
-    outputs = torch.zeros((1, 1023)).float().to('cuda')
+    outputs = torch.zeros((1, 1024)).float().to('cuda')
     for i in tqdm(range(0, len(enc), 100)):
         encoded = torch.tensor(enc[i:i+100]).unsqueeze(0).long().cuda()
         outputs += torch.mean(model(encoded)[0].squeeze(0), dim=0) / (len(enc) / 100 + 1)
